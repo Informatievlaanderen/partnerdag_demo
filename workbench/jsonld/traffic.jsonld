@@ -1,9 +1,0 @@
-{
-  "@context": [
-    "http://geojson.org/geojson-ld/geojson-context.jsonld",
-    {
-      "@vocab": "https://telraam.net/ns/traffic#",
-      "@base":  "https://telraam.net/en/location/"
-    }
-  ]
-}

@@ -1,0 +1,35 @@
+mongock:
+  migration-scan-package: VSDS
+
+springdoc:
+  swagger-ui:
+    path: /v1/swagger
+    urlsPrimaryName: base
+
+management:
+  tracing:
+    enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+
+ldes-server:
+  host-name: http://localhost:8080/ldes
+  # retention-cron: "0 0 2 * * *" # run once a day at 02:00
+  # compaction-cron: "0 0 3 * * *" # run once a day at 03:00
+  # deletion-cron: "0 0 2 * * *" # run once a day at 04:00
+  compaction-duration: "P14D"
+  retention-cron:  "0 0 12 1 11 *" # run every November, 1st at noon
+  compaction-cron: "0 0 12 2 11 *" # run every November, 2nd at noon
+  deletion-cron:   "0 0 12 3 11 *" # run every November, 3rd at noon
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://ldes-mongodb:27017/crashcourse
+      auto-index-creation: true
+
+server:
+  servlet:
+    context-path: /ldes

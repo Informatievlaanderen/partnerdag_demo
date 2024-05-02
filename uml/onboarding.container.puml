@@ -1,0 +1,17 @@
+@startuml Onboarding Telraam Container Diagram
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title Onboarding Telraam Context Diagram
+
+System_Ext(telraam, "Telraam System", "Provides site & data messages")
+System_Boundary(ldes, "Telraam LDES System") {
+    Container(workbench, "Telraam workbench", "docker container", "Transforms site & data message to observation versions")
+    Container(server, "Telraam\nLDES Server", "docker container", "Ingests and serves observation versions")
+}
+SystemDb_Ext(database, "Telraam\nData Store", "Stores observation versions")
+
+Rel_R(telraam, workbench, "pushes site & data message periodically")
+Rel_R(workbench, server, "send observation versions")
+Rel_R(server, database, "store observation versions")
+
+@enduml

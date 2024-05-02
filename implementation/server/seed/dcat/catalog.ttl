@@ -1,0 +1,22 @@
+@prefix :         <https://telraam.net/id/dcat#> .
+@prefix rdfs:     <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dcat:     <http://www.w3.org/ns/dcat#> .
+@prefix dc:       <http://purl.org/dc/terms/> .
+@prefix foaf:     <http://xmlns.com/foaf/0.1/> .
+@prefix vcard:    <http://www.w3.org/2006/vcard/ns#> .
+
+[] a dcat:Catalog ;
+  dc:title "Counting traffic in Flanders"@en ;
+  dc:title "Verkeersmetingen in Vlaanderen"@nl ;
+  dc:description "All LDES'es related to counting traffic in Flanders by Telraam"@en ;
+  dc:description "Alle LDESen ivm. verkeersmetingen in Vlaanderen door Telraam"@nl ;
+  dcat:contactPoint :contact ;
+  dc:license <https://data.vlaanderen.be/id/licentie/creative-commons-zero-verklaring/v1.0> ;
+  dc:publisher [ a dc:Agent ; foaf:name "Telraam"@nl ] .
+
+:contact a vcard:Kind ; vcard:hasEmail <mailto:info@telraam.net> ; foaf:page <https://telraam.net/en/contact-us> .
+<mailto:info@telraam.net> a rdfs:Resource .
+<https://telraam.net/en/contact-us> a rdfs:Resource .
+
+<https://data.vlaanderen.be/id/licentie/creative-commons-zero-verklaring/v1.0> a dc:LicenseDocument .
+

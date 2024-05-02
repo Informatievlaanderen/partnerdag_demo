@@ -1,0 +1,56 @@
+PREFIX rdf:          <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX xsd:          <http://www.w3.org/2001/XMLSchema#>
+PREFIX geojson:      <https://purl.org/geojson/vocab#>
+PREFIX locn:         <http://www.w3.org/ns/locn#>
+PREFIX gsp:          <http://www.opengis.net/ont/geosparql#>
+PREFIX sf:           <http://www.opengis.net/ont/sf#>
+PREFIX :             <https://telraam.net/ns/traffic#>
+
+CONSTRUCT {
+
+  GRAPH ?id {
+    ?id a :Observation ;
+      :timestamp ?timestamp ;
+      :timezone ?timezone ;
+      :period ?period ;
+      :duration ?duration ;
+      :uptime ?uptime ;
+      :heavy ?heavy ;
+      :car ?car ;
+      :bike ?bike ;
+      :pedestrian ?pedestrian ;
+      :v85 ?v85 ;
+      locn:geometry [a ?geometryType ; gsp:asWKT ?geometry ] .
+  }
+
+} WHERE {
+
+  ?feature geojson:properties ?properties .
+  ?feature locn:geometry ?geometry .
+
+  OPTIONAL { FILTER(strStarts(str(?geometry), "MULTILINESTRING"))
+    bind(sf:MultiLineString as ?geometryType) .
+  }
+
+  ?properties :segment_id ?segment_id .
+  bind(uri(concat("https://telraam.net/en/location/", str(?segment_id))) as ?id) .
+
+  ?properties :date ?date .
+  filter(?date != "") .
+  bind(strdt(replace(?date," ","T"), xsd:dateTime) as ?timestamp) .
+
+  ?properties :timezone ?timezone .
+
+  OPTIONAL { filter(?period = "hourly" || ?period = "daily")
+    ?properties :period ?period . 
+    bind(strdt(if(?period = "hourly", "PT1H", "P1D"), xsd:duration) as ?duration) .
+  }
+
+  OPTIONAL { filter(?uptime != "") ?properties :uptime ?uptime . }
+  OPTIONAL { filter(?heavy != "") ?properties :heavy ?heavy . }
+  OPTIONAL { filter(?car != "") ?properties :car ?car . }
+  OPTIONAL { filter(?bike != "") ?properties :bike ?bike . }
+  OPTIONAL { filter(?pedestrian != "") ?properties :pedestrian ?pedestrian . }
+  OPTIONAL { filter(?v85 != "") ?properties :v85 ?v85 . }
+
+}

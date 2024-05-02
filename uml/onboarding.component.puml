@@ -1,0 +1,33 @@
+@startuml Onboarding Telraam Context Diagram
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title Onboarding Telraam Context Diagram
+
+System_Ext(telraam, "Telraam System", "Provides site & data messages")
+SystemDb_Ext(database, "Telraam\nData Store", "Stores observation versions")
+
+System_Boundary(workbench, "Telraam Workbench") {
+    Container_Boundary(pipeline, "Observations Pipeline") {
+        Component(listener, "HTTP Listener", "Java", "Listens for site & data messages")
+        Component(adapter, "HTTP Listener Adapter", "Java", "Adds JSON-LD context converting to LD")
+        Component(as_wkt, "WKT Convertor", "Java", "Converts geojson to wkt format")
+        Component(to_observation, "Site & data Convertor", "Java", "Converts to intermediate format")
+        Component(to_oslo, "OSLO Convertor", "Java", "Converts to OSLO model")
+        Component(to_version, "Version Creator", "Java", "Converts OSLO state model to version object")
+        Component(send_version, "Version Sender", "Java", "Send version objects using HTTP")
+    }
+}
+
+System(server, "Telraam\nLDES System", "Receives, transforms, ingests and serves observation versions")
+
+Rel_R(telraam, listener, "push site & data message")
+Rel_R(listener, adapter, "site & data info")
+Rel_D(adapter, as_wkt, "site & data state")
+Rel_R(as_wkt, to_observation, "observation state")
+Rel_R(to_observation, to_oslo, "observation state")
+Rel_U(to_oslo, to_version, "observation state")
+Rel_U(to_version, send_version, "observation version")
+Rel_R(send_version, server, "send\nobservation version")
+Rel_D(server, database, "store\nobservation versions")
+
+@enduml

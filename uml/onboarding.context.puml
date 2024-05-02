@@ -1,0 +1,13 @@
+@startuml Onboarding Telraam Context Diagram
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+title Onboarding Telraam Context Diagram
+
+System_Ext(telraam, "Telraam System", "Provides site & data messages")
+System(ldes, "Telraam\nLDES System", "Receives, transforms, ingests and serves observation versions")
+SystemDb_Ext(database, "Telraam\nData Store", "Stores observation versions")
+
+Rel_R(telraam, ldes, "pushes site & data message periodically")
+Rel_R(ldes, database, "store observation versions")
+
+@enduml
