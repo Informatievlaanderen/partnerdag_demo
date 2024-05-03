@@ -55,7 +55,7 @@
 
 Push the current state to the workbench pipeline:
 ```bash
-curl -H "Content-Type: application/json" http://localhost:8081/traffic-pipeline -d @./server/tmp/data.json
+curl -H "Content-Type: application/json" http://localhost:8081/traffic-pipeline -d @./server/data/data.json
 ```
 
 Or push only the LDES data of one province:
