@@ -68,7 +68,7 @@ curl -H "Content-Type: application/json" http://localhost:8081/traffic-pipeline 
     curl $LDES_SERVER_BASE/observations/by-page?pageNumber=1
     curl $LDES_SERVER_BASE/observations/by-location?tile=0/0/0
     ```
-
+> **MAC users**: If you are running bash from Terminal you might want to put the value after `curl` inside quotes.
 6. To end:
     ```bash
     docker compose rm ldio-workbench --stop --force --volumes
